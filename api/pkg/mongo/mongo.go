@@ -1,4 +1,4 @@
-package mongo
+package mongoSetting
 
 import (
 	"context"
@@ -8,6 +8,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"time"
 )
+
+type MongoConfig struct {
+	Client *mongo.Client
+	Ctx    context.Context
+	Cancel context.CancelFunc
+}
 
 func ConnectMongo(uri string) (*mongo.Client, context.Context, context.CancelFunc, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)

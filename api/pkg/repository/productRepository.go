@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
+	mongoSetting "vue-and-golang-data-grid-workshop/pkg/mongo"
 )
 
 var (
@@ -13,12 +14,16 @@ var (
 type ProductRepository struct {
 	Client *mongo.Client
 	Ctx    context.Context
+	Cancel context.CancelFunc
 }
 
 func (r ProductRepository) InsertOne(doc interface{}) (*mongo.InsertOneResult, error) {
 	collection := r.Client.Database(dataBase).Collection(col)
 
+	defer mongoSetting.CloseMongo(r.Client, r.Ctx, r.Cancel)
+
 	result, err := collection.InsertOne(r.Ctx, doc)
+
 	return result, err
 }
 
