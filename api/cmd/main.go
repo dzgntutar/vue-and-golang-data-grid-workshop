@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"vue-and-golang-data-grid-workshop/pkg/model"
+	mongoSetting "vue-and-golang-data-grid-workshop/pkg/mongo"
+	"vue-and-golang-data-grid-workshop/pkg/repository"
+
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	mongoSetting "vue-and-golang-data-grid-workshop/pkg/mongo"
-	"vue-and-golang-data-grid-workshop/pkg/repository"
 )
 
 type MainApp struct {
@@ -54,14 +56,18 @@ func (app *MainApp) CreateRoute() {
 	}
 
 	app.fiber.Post("/", func(ctx *fiber.Ctx) error {
+		product := model.Product{}
+		if err := ctx.BodyParser(&product); err != nil {
+			return err
+		}
 
 		var document interface{}
 
 		document = bson.D{
-			{"name", "Computer"},
-			{"price", 80},
-			{"count", 10},
-			{"category", 1},
+			{"name", product.Name},
+			{"price", product.Price},
+			{"count", product.Count},
+			{"category", product.Category},
 		}
 
 		result, err := productRepository.InsertOne(document)
