@@ -80,6 +80,10 @@ func (app *MainApp) CreateRoute() {
 		fmt.Println("InsertOne-->")
 		fmt.Println(result.InsertedID)
 
+		return nil
+	})
+
+	app.fiber.Post("/insertMany", func(ctx *fiber.Ctx) error {
 		/*
 			var documents []interface{}
 
@@ -111,6 +115,12 @@ func (app *MainApp) CreateRoute() {
 				fmt.Println(id)
 			}*/
 
+		var products []model.Product
+		if err := ctx.BodyParser(&products); err != nil {
+			return err
+		}
+
+		fmt.Println(products)
 		return nil
 	})
 }
