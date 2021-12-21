@@ -92,7 +92,7 @@ func (app *MainApp) CreateRoute() {
 
 		fmt.Println(products)
 
-		documents := []bson.D{}
+		var documents []interface{}
 
 		for _, product := range products {
 			documents = append(documents, bson.D{
@@ -104,6 +104,15 @@ func (app *MainApp) CreateRoute() {
 		}
 
 		fmt.Println(documents)
+
+		result, err := productRepository.InsertMany(documents)
+
+		if err != nil {
+			fmt.Println("Hata-->")
+			panic(err)
+		}
+
+		fmt.Println(result)
 
 		return nil
 	})
