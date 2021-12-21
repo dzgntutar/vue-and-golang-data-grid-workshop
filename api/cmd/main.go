@@ -84,36 +84,6 @@ func (app *MainApp) CreateRoute() {
 	})
 
 	app.fiber.Post("/insertMany", func(ctx *fiber.Ctx) error {
-		/*
-			var documents []interface{}
-
-			documents = []interface{}{
-				bson.D{
-					{"name", "Phone"},
-					{"price", 25},
-					{"count", 5},
-					{"category", 1},
-				},
-				bson.D{
-					{"name", "Console"},
-					{"price", 44},
-					{"count", 2},
-					{"category", 2},
-				},
-			}
-
-			insertManyResult, err := insertMany(client, c, "myDb",
-				"product", documents)
-
-			if err != nil {
-				panic(err)
-			}
-
-			fmt.Println("InsertMany-->")
-
-			for id := range insertManyResult.InsertedIDs {
-				fmt.Println(id)
-			}*/
 
 		var products []model.Product
 		if err := ctx.BodyParser(&products); err != nil {
@@ -121,6 +91,20 @@ func (app *MainApp) CreateRoute() {
 		}
 
 		fmt.Println(products)
+
+		documents := []bson.D{}
+
+		for _, product := range products {
+			documents = append(documents, bson.D{
+				{"name", product.Name},
+				{"price", product.Price},
+				{"count", product.Count},
+				{"category", product.Category},
+			})
+		}
+
+		fmt.Println(documents)
+
 		return nil
 	})
 }
