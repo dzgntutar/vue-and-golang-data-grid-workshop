@@ -73,11 +73,9 @@ func (app *MainApp) CreateRoute() {
 		result, err := productRepository.InsertOne(document)
 
 		if err != nil {
-			fmt.Println("Hata-->")
 			panic(err)
 		}
 
-		fmt.Println("InsertOne-->")
 		fmt.Println(result.InsertedID)
 
 		return nil
@@ -108,11 +106,22 @@ func (app *MainApp) CreateRoute() {
 		result, err := productRepository.InsertMany(documents)
 
 		if err != nil {
-			fmt.Println("Hata-->")
 			panic(err)
 		}
 
 		fmt.Println(result)
+
+		return nil
+	})
+
+	app.fiber.Get("/", func(ctx *fiber.Ctx) error {
+
+		products, err := productRepository.GetAll()
+
+		if err != nil {
+			panic(err)
+		}
+		ctx.Status(fiber.StatusOK).JSON(products)
 
 		return nil
 	})
