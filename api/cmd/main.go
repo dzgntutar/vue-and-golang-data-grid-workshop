@@ -125,6 +125,24 @@ func (app *MainApp) CreateRoute() {
 
 		return nil
 	})
+
+	app.fiber.Get("/getWithPagination", func(ctx *fiber.Ctx) error {
+
+		var pageModel = model.PageModel{}
+
+		if err := ctx.BodyParser(&pageModel); err != nil {
+			return err
+		}
+
+		products, err := productRepository.GetAllWithPagination(pageModel)
+
+		if err != nil {
+			panic(err)
+		}
+		ctx.Status(fiber.StatusOK).JSON(products)
+
+		return nil
+	})
 }
 
 func (app *MainApp) Run(port string) {
