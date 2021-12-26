@@ -24,6 +24,8 @@ func main() {
 
 	app.Initialize()
 
+	defer mongoSetting.CloseMongo(app.client, app.ctx, app.cancel)
+
 	app.CreateRoute()
 
 	app.Run(":3000")
@@ -41,6 +43,7 @@ func (app *MainApp) Initialize() {
 	app.cancel = cancel
 
 	if err := mongoSetting.PingMongo(client, c); err != nil {
+		fmt.Println("PingMongo")
 		panic(err)
 	}
 
