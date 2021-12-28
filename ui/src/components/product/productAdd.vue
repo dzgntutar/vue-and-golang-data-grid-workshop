@@ -6,27 +6,26 @@
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <input type="text" class="form-control" placeholder="Name">
+          <input type="text" class="form-control" placeholder="Name" v-model="product.name">
         </div>
         <div class="col">
-          <input type="number" class="form-control" placeholder="Price">
+          <input type="number" class="form-control" placeholder="Price" v-model="product.price">
         </div>
       </div>
       <br>
       <div class="row">
         <div class="col">
-          <input type="text" class="form-control" placeholder="Count">
+          <input type="text" class="form-control" placeholder="Count" v-model="product.count">
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Category">
+          <input type="text" class="form-control" placeholder="Category" v-model="product.category">
         </div>
       </div>
       <br>
       <div class="row">
         <div class="col">
-          <button>Add</button>
+          <button @click="add">Add</button>
         </div>
-
       </div>
     </div>
 
@@ -35,7 +34,22 @@
 
 <script>
 export default {
-  name: "productAdd"
+  name: "productAdd",
+  data() {
+    return {
+      product: {
+        name: null,
+        price: 0,
+        count: 0,
+        category: 0
+      }
+    }
+  },
+  methods:{
+    add(){
+      alert(this.product.name)
+    }
+  }
 }
 </script>
 
