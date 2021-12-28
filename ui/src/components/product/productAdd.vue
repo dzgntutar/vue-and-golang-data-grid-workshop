@@ -47,7 +47,7 @@ export default {
   },
   methods:{
     add(){
-      alert(this.product.name)
+      this.$store.dispatch("addProduct", this.product);
     }
   }
 }

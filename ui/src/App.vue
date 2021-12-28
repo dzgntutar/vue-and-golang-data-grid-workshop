@@ -1,15 +1,16 @@
 <template>
   <div id="app" class="container">
+    <header-app/>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
+import menu from "./components/shared/menu"
 export default {
   name: 'App',
   components: {
-
+    headerApp :menu
   }
 }
 </script>
