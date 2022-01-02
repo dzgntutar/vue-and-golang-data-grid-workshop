@@ -28,7 +28,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -45,8 +44,8 @@ export default {
       }
     }
   },
-  methods:{
-    add(){
+  methods: {
+    add() {
       this.$store.dispatch("addProduct", this.product);
     }
   }

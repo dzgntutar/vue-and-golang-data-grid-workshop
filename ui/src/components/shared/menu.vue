@@ -1,5 +1,6 @@
 <template>
   <ul class="nav">
+
     <li class="nav-item">
       <router-link
           to="/"
@@ -30,7 +31,6 @@
 
 <script>
 export default {
-  name: "menu"
 }
 </script>
 

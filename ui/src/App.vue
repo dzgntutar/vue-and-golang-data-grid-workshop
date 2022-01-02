@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container">
-    <header-app/>
+    <menu-app/>
     <router-view></router-view>
   </div>
 </template>
@@ -10,7 +10,9 @@ import menu from "./components/shared/menu"
 export default {
   name: 'App',
   components: {
-    headerApp :menu
+    menuApp :menu
+  },created() {
+    this.$store.dispatch("getProductsFromApi")
   }
 }
 </script>

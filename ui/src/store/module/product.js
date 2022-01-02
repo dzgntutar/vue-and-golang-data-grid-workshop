@@ -1,8 +1,14 @@
+import axios from "axios";
+
 const state = {
     products: [],
 };
 
-const getters = {};
+const getters = {
+    getAllProducts(state) {
+        return state.products
+    }
+};
 
 const mutations = {
     addProductToSatate(state, product) {
@@ -12,6 +18,13 @@ const mutations = {
 };
 
 const actions = {
+    getProductsFromApi() {
+
+        console.log("getProductsFromApi..")
+        axios.get("").then(response => {
+            console.log(response)
+        })
+    },
     addProduct({commit}, product) {
         commit("addProductToSatate", product)
     }

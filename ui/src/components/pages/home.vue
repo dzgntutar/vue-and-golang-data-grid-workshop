@@ -7,9 +7,11 @@
 <script>
 import productList from "@/components/product/productList";
 export default {
-  name: "Home",
+  name: "home",
   components: {
     productListApp:productList
+  },created() {
+    console.log("Home created")
   }
 
 }

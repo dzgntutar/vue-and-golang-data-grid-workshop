@@ -1,7 +1,7 @@
 import  Vue from  "vue"
 import VueRouter from "vue-router";
 
-import Home from "@/components/pages/Home";
+import home from "@/components/pages/home";
 import productAdd from "@/components/product/productAdd";
 
 Vue.use(VueRouter)
@@ -11,7 +11,7 @@ Vue.use(VueRouter)
 const routes = [
     {
         path:"/",
-        component:Home
+        component:home
     },
     {
         path: "/addProduct",
