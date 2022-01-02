@@ -38,8 +38,7 @@ func CloseMongo(client *mongo.Client, ctx context.Context, cancel context.Cancel
 	defer func() {
 
 		if err := client.Disconnect(ctx); err != nil {
-			fmt.Println("CloseMongo")
-			panic(err)
+			fmt.Println(err)
 		}
 	}()
 }

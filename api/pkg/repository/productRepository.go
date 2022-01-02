@@ -25,7 +25,7 @@ type ProductRepository struct {
 func (r ProductRepository) InsertOne(doc interface{}) (*mongo.InsertOneResult, error) {
 	collection := r.Client.Database(dataBase).Collection(col)
 
-	//defer mongoSetting.CloseMongo(r.Client, r.Ctx, r.Cancel)
+	defer mongoSetting.CloseMongo(r.Client, r.Ctx, r.Cancel)
 
 	result, err := collection.InsertOne(r.Ctx, doc)
 
@@ -35,7 +35,7 @@ func (r ProductRepository) InsertOne(doc interface{}) (*mongo.InsertOneResult, e
 func (r ProductRepository) InsertMany(docs []interface{}) (*mongo.InsertManyResult, error) {
 	collection := r.Client.Database(dataBase).Collection(col)
 
-	//defer mongoSetting.CloseMongo(r.Client, r.Ctx, r.Cancel)
+	defer mongoSetting.CloseMongo(r.Client, r.Ctx, r.Cancel)
 
 	result, err := collection.InsertMany(r.Ctx, docs)
 
@@ -43,9 +43,10 @@ func (r ProductRepository) InsertMany(docs []interface{}) (*mongo.InsertManyResu
 }
 
 func (r ProductRepository) GetAllWithPagination(pageModel model.PageModel) ([]bson.M, error) {
+
 	collection := r.Client.Database(dataBase).Collection(col)
 
-	//defer mongoSetting.CloseMongo(r.Client, r.Ctx, r.Cancel)
+	defer mongoSetting.CloseMongo(r.Client, r.Ctx, r.Cancel)
 
 	skip := int64((pageModel.Page - 1) * pageModel.Count)
 	limit := int64(pageModel.Count)
@@ -55,18 +56,13 @@ func (r ProductRepository) GetAllWithPagination(pageModel model.PageModel) ([]bs
 		Limit: &limit,
 	}
 
-	//opts.SetSort(bson.D{{"_id", -1}})
-	//son.D{{"price", bson.D{{"$gt", 50}}}}
 	cursor, err := collection.Find(r.Ctx, bson.D{}, &opts)
 
-	defer cursor.Close(r.Ctx)
-
 	var products []bson.M
-
+	var product bson.M
 	for cursor.Next(r.Ctx) {
-		var product bson.M
+
 		if err = cursor.Decode(&product); err != nil {
-			fmt.Println("In Cursor")
 			log.Fatal(err)
 		}
 		products = append(products, product)
@@ -91,8 +87,8 @@ func (r ProductRepository) GetAll() ([]bson.M, error) {
 			log.Fatal(err)
 		}
 		products = append(products, product)
+		fmt.Println(product)
 	}
-
+	cursor.Close(r.Ctx)
 	return products, nil
-
 }

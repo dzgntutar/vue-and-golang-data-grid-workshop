@@ -50,9 +50,11 @@ func (app *MainApp) Initialize() {
 	app.fiber = fiber.New()
 }
 
+var productRepository repository.ProductRepository
+
 func (app *MainApp) CreateRoute() {
 
-	var productRepository = repository.ProductRepository{
+	productRepository = repository.ProductRepository{
 		Client: app.client,
 		Ctx:    app.ctx,
 		Cancel: app.cancel,
@@ -73,13 +75,11 @@ func (app *MainApp) CreateRoute() {
 			{"category", product.Category},
 		}
 
-		result, err := productRepository.InsertOne(document)
+		_, err := productRepository.InsertOne(document)
 
 		if err != nil {
 			panic(err)
 		}
-
-		fmt.Println(result.InsertedID)
 
 		return nil
 	})
@@ -90,8 +90,6 @@ func (app *MainApp) CreateRoute() {
 		if err := ctx.BodyParser(&products); err != nil {
 			return err
 		}
-
-		fmt.Println(products)
 
 		var documents []interface{}
 
@@ -104,15 +102,11 @@ func (app *MainApp) CreateRoute() {
 			})
 		}
 
-		fmt.Println(documents)
-
-		result, err := productRepository.InsertMany(documents)
+		_, err := productRepository.InsertMany(documents)
 
 		if err != nil {
 			panic(err)
 		}
-
-		fmt.Println(result)
 
 		return nil
 	})
@@ -124,7 +118,9 @@ func (app *MainApp) CreateRoute() {
 		if err != nil {
 			panic(err)
 		}
-		ctx.Status(fiber.StatusOK).JSON(products)
+		if err := ctx.Status(fiber.StatusOK).JSON(products); err != nil {
+			return err
+		}
 
 		return nil
 	})
@@ -142,7 +138,11 @@ func (app *MainApp) CreateRoute() {
 		if err != nil {
 			panic(err)
 		}
-		ctx.Status(fiber.StatusOK).JSON(products)
+
+		fmt.Println(products)
+		//if err := ctx.Status(fiber.StatusOK).JSON(products); err != nil {
+		//	return err
+		//}
 
 		return nil
 	})
